@@ -1,33 +1,263 @@
-.App {
+:root {
+  --clr-primary: rgb(54, 112, 199);
+  --clr-light: #f4f4f4;
+  --clr-dark: #333;
+  --clr-warning: rgb(99, 36, 36);
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  color: var(--clr-light);
+  background-color: var(--clr-primary);
+  font-size: 62.5%; /*1rem = 10px*/
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+}
+
+.app-body {
+  display: grid;
+  grid:
+    "header header header header" auto
+    "...... lists  todos  ......" auto/
+    1fr minmax(100px, 300px) minmax(250px, 500px) 1fr;
+}
+
+.title-header {
+  grid-area: header;
   text-align: center;
+  font-size: calc(5vw + 2rem);
+  color: rgba(0, 0, 0, 0.1);
+  margin: 0;
+  margin-bottom: 0.6em;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* global styles */
+form {
   display: flex;
-  flex-direction: column;
+}
+.input,
+.btn {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+/* inputs */
+
+.input {
+  padding: 0.3em;
+  font-size: 1rem;
+  font-weight: 300;
+  color: inherit;
+  border-bottom: 1px solid currentColor;
+  order: 2;
+  transition: opacity 200ms ease-out;
+}
+
+.input::placeholder {
+  color: inherit;
+  opacity: 0.8;
+}
+
+.input-todo {
+  color: #111;
+}
+
+/* buttons */
+.btn {
+  cursor: pointer;
+  margin-right: 0.3em;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: inherit;
+  transition: opacity 200ms ease-out;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+/* Lists  */
+.lists-container {
+  grid-area: lists;
+  padding: 1em;
+}
+
+.lists-header {
+  font-size: 1.6rem;
+  margin-bottom: 2rem;
+}
+
+.all-lists {
+  margin-left: 2em;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  list-style-type: circle;
+}
+.list-item {
+  opacity: 0.9;
+  margin-bottom: 0.5em;
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: opacity 200ms ease-out;
+}
+
+.list-item:hover {
+  opacity: 0.5;
+}
+
+.active:hover {
+  opacity: 1;
+}
+
+.active {
+  opacity: 1;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.todos-container {
+  grid-area: todos;
+  background: white;
+  color: var(--clr-dark);
+  position: relative;
+  margin-bottom: 10em;
+}
+
+.todos-header {
+  padding: 5em 3em;
+  background: #e1e1e1;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-between;
 }
 
-.App-link {
-  color: #61dafb;
+.todos-title {
+  font-size: 2.3rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.todos-counter {
+  font-size: 1rem;
+}
+
+.all-todos {
+  font-size: 1.8rem;
+  list-style: none;
+}
+
+.todo-form {
+  padding: 3em 3em;
+  padding-top: 0;
+}
+.todo-body {
+  padding: 2em 3em;
+  padding-bottom: 0;
+}
+
+.todo-item {
+  margin-bottom: 1em;
+  position: relative;
+}
+
+.todo-item::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: -5px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.1;
+}
+
+/* Custom checkboxes */
+[type="checkbox"] {
+  opacity: 0;
+  position: absolute;
+}
+
+.todo-item label {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+
+.custom-checkbox {
+  --size: 0.75em;
+  display: inline-block;
+  width: var(--size);
+  height: var(--size);
+  margin-right: var(--size);
+  cursor: pointer;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  transform: scale(1);
+  transition: all 300ms ease-in-out;
+}
+
+.todo-item:hover .custom-checkbox,
+[type="checkbox"]:focus + label .custom-checkbox {
+  transform: scale(1.2);
+  color: var(--clr-primary);
+}
+
+[type="checkbox"]:checked + label .custom-checkbox {
+  background: var(--clr-primary);
+  border-color: var(--clr-primary);
+  box-shadow: inset 0 0 0px 2px white;
+}
+
+[type="checkbox"]:checked + label {
+  opacity: 0.5;
+}
+
+.todo-item label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  left: 1.5em;
+  top: 50%;
+  height: 3px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 150ms ease-in-out;
+}
+
+[type="checkbox"]:checked + label::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.delete-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: -35px;
+  color: var(--clr-light);
+}
+
+.delete-list,
+.delete-todos {
+  font-size: 1rem;
+  font-weight: 100;
+  transition: color 150ms;
+}
+
+.delete-todos:hover,
+.delete-list:hover {
+  color: var(--clr-warning);
 }
